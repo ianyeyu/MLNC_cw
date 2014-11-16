@@ -7,7 +7,7 @@ GreedyPolicy = zeros(S, A); % each row has A possible actions each has an assign
 for priorState = 1:S
     if Absorbing(priorState)
         continue
-    end
+	end
     tmpQs = zeros(A, 1);
     for action =1:A
         tmpQ = 0;
@@ -19,10 +19,3 @@ for priorState = 1:S
     [value, index] = max(tmpQs);
     GreedyPolicy(priorState, index) = 1;
 end
-
-
-
-
-
-
-

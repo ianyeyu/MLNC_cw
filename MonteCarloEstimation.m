@@ -5,15 +5,27 @@
 %Policy is unbiased policy
 %gamma is discount factor
 function Q = MonteCarloEstimation(T, R, Initial, Absorbing, Policy, gamma, n)
-ZeroMatrix = zeros(length(Initial)*2,1);
-Q = ZeroMatrix;
-for j = 1:n
-	trace = GetTrace(T,R,Initial,Absorbing,Policy);
-	Return = ZeroMatrix;
-	for i = 1:size(trace,1)-1
-		Return(trace(i,2),trace(i,3)) = trace(i,1);
+	
+%initialise
+Q = zeros(length(Initial)*2,1);
+for i = 1:length(Initial)
+	Return{i}{1} = [];
+	Return{i}{2} = []; 
+end
+Return = cell(length(Initial),2)
+
+for m = 1:n
+	trace = GetTrace(T,R,Initial,Absorbing,Policy); %randomly obtain one trace
+	traceSize = size(trace,1);
+	
+	for i = 1:traceSize  %trace is a m*3 matrix, m is the number of steps
+		tmp = 0;	
+		for j = i:traceSize
+			tmp = tmp + trace(j,1).*(gamma^(j-1));
+		end
+		
+		Return{trace(i,2)}{trace(i,3)} = [Return{trace(i,2)}{trace(i,3)}, [trace(i,2),trace(i,3),tmp]];
 	end
-	Return = mean(Return,2);
-	Q = gamma .* Q + (1-gamma) .* Return;
+	
 end
 end
