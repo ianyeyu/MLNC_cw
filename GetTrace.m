@@ -10,7 +10,7 @@ priorState = DrawFromDist(Initial); %find the most possible state
 priorAction = DrawFromDist(Policy(priorState,:)); % get action
 reward = 0;
 step = [ reward, priorState, priorAction ]; % first reward is a dummy reward
-trace = [ step; ];
+trace = step; 
 
 %only if reach absorbing step the loop will stop
 while( true )    %find locates the index of agent
