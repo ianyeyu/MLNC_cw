@@ -23,7 +23,7 @@ for i=1:episodes %sampling steps
 	priorAction = DrawFromDist(Policy(priorState,:)); % get action
 	
 	%within each episode, run iteration - two stops-1.reach end; 2.reach maximum steps
-	for i=1:maxsteps
+	for j=1:maxsteps
 		postState = DrawFromDist(T(:,priorState,priorAction)); %get post state under specific prior state and action
 		reward = R(postState,priorState,priorAction);
 		if Absorbing(postState) ~= 1 %if trace is not going to stop
