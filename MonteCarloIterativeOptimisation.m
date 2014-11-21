@@ -30,7 +30,7 @@ for i=1:numtraces
         Q(s,a) = (1-alpha)*Q(s,a) + alpha*return_t; % update Q.
         return_t = return_t*gamma + trace(t,1); % return for time t-1 in terms of return and reward at t
     end
-    Policy = eGreedyPolicyFromQ(Q, Absorbing, epsilon);
+    Policy = eGreedyPolicyFromQ(Q, Absorbing, epsilon); % update Policy based on eGreedyPolicyFromQ()
 end
 OptimalPolicy = GreedyPolicyFromQ(Q, Absorbing);
 end

@@ -1,3 +1,7 @@
+%Values - vector of state values
+%Locs - state to location mapping
+%Shape - grid world shape
+%finally, show the values within the grid - it could be return values, state values or any values corresponding to this grid
 function [] = DisplayGrid(Values,Locs,Shape)
 height = Shape(1);
 width = Shape(2);

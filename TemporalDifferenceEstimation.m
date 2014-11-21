@@ -18,24 +18,30 @@ A = length(T(1,1,:)); % number of actions - introspecting transition matrix
 Q = zeros(S, A); % i.e. state-action value function estimate
 Policy = GetUnbiasedPolicy(Absorbing, A);
 
-for i=1:episodes
-  priorState = DrawFromDist(Initial);
-  priorAction = DrawFromDist(Policy(priorState,:)); % get action
-  for i=1:maxsteps
-    postState = DrawFromDist(T(:,priorState,priorAction));
-    reward = R(postState,priorState,priorAction);
-    if Absorbing(postState) ~= 1
-        postAction = DrawFromDist(Policy(postState,:));
-    else
-      Q(priorState,priorAction) = (1-alpha)*Q(priorState,priorAction) + alpha*(reward);
-      break;
-    end
-    Q(priorState,priorAction) = (1-alpha)*Q(priorState,priorAction) + alpha*(reward + gamma*Q(postState,postAction));
-    priorState = postState;
-    priorAction = postAction;
-  end
-end
+for i=1:episodes %sampling steps
+	priorState = DrawFromDist(Initial);
+	priorAction = DrawFromDist(Policy(priorState,:)); % get action
+	
+	%within each episode, run iteration - two stops-1.reach end; 2.reach maximum steps
+	for i=1:maxsteps
+		postState = DrawFromDist(T(:,priorState,priorAction)); %get post state under specific prior state and action
+		reward = R(postState,priorState,priorAction);
+		if Absorbing(postState) ~= 1 %if trace is not going to stop
+			postAction = DrawFromDist(Policy(postState,:));
+		else
+			%if trace stops, update Q matrix (S*A size) and then quit loop
+			%do not need to include Q for next step
+			Q(priorState,priorAction) = (1-alpha)*Q(priorState,priorAction) + alpha*(reward);
+			break;
+		end
 
+		%update Q values after each iteration
+		Q(priorState,priorAction) = (1-alpha)*Q(priorState,priorAction) + alpha*(reward + gamma*Q(postState,postAction));
+		priorState = postState;
+		priorAction = postAction;
+	end
+	
+end
 end
 
 

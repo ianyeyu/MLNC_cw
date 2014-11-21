@@ -1,8 +1,10 @@
+%Shape - height and width of the grid
+%Locs - map state indices to grids -- row represent state number, [row,1] and [row,2] represent its location in grid
 function [S, A, T, R, StateNames, ActionNames, Initial, Absorbing, Locs, Shape ] = GridWorld2()
 % The simple GridWorld1 by another method
 %
-Shape = [3,4];
-action_effects = [ 0.8, 0.1, 0.0, 0.1];
+Shape = [3,4]; 
+action_effects = [ 0.8, 0.1, 0.0, 0.1]; 
 obstacles = [[2,2];];
 absorbing_locs = [[1,4];[2,4];];
 default_reward = -1;
