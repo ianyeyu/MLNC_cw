@@ -1,4 +1,4 @@
-function [S, A, T, R, StateNames, ActionNames, Absorbing] = GridWorld1()
+function [S, A, T, R, StateNames, ActionNames, Absorbing, Initial] = GridWorld1()
 
 % Number of states
 S = 11; 
@@ -25,11 +25,17 @@ Absorbing = [
 0   0   0   1   0   0   1   0   0   0   0
 ];
 
+% Matrix indicating starting state distribution
+Initial = [
+%1  2   3   4   5   6   7   8   9   10  11 STATES 
+0   0   0   0   0   0   0   1   0   0   0 
+];
+
 % load transition
-T = transition_matrix()
+T = transition_matrix();
 
 % load reward matrix
-R = reward_matrix(S,A)
+R = reward_matrix(S,A);
 
 %--------------------------------------------------------------------------
 
@@ -124,7 +130,7 @@ R = zeros(S, S, A);
 for i = 1:S
    for j = 1:A
       for k = 1:S
-         R(k, i, j) = reward_function(i, j, k);
+         R(k, i, j) = reward_function(i, j, k); %i - priorState, j - action, k - postState
       end
    end    
 end

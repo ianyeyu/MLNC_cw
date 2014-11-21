@@ -4,9 +4,10 @@
 %Initial and Absorbing are for states
 %Policy is unbiased policy
 %gamma is discount factor
-function [Q, Policy] = MonteCarloEstimation(T, R, Initial, Absorbing, Policy, gamma, n)
+function [Q] = MonteCarloEstimation(T, R, Initial, Absorbing, Policy, gamma, n)
 numOfStates = length(Initial);
-Return = cell(numOfStates,2);
+A = size(T,3);
+Return = cell(numOfStates,A);
 % ZerosMatrix = zeros(size(Policy));
 % Policy = ZerosMatrix;
 
@@ -26,22 +27,26 @@ for m = 1:n
 		
 		%upgrade the Return matrix for each state in episode
 		%Return is a cell containing 7*2 numeric array 
-		Return{Trace(i,2), Trace(i,3)} = [Return{Trace(i,2), Trace(i,3)}, [Trace(i,2),Trace(i,3),tmp]];
+		Return{Trace(i,2), Trace(i,3)} = [Return{Trace(i,2), Trace(i,3)}, tmp];
 	end
 	
 	Q = cellfun(@mean,Return); %Q is 7*2 numeric matrix
-	[~,index] = max(Q,[],2); %find the max rewards action for each state -> 7*1 matrix
-	index = [[1:numOfStates]', index];  %concatenate maximum values with states indices -> 7*2 matrix
-	states = unique(states); %find the states in the episode
-	index = index(states,:); %delete the un-existing states in the eposide
-	
+    Q(isnan(Q)) = 0;
+    
+    
+% 	[~,index] = max(Q,[],2); %find the max rewards action for each state -> 7*1 matrix
+% 	index = [[1:numOfStates]', index];  %concatenate maximum values with states indices -> 7*2 matrix
+% 	states = unique(states); %find the states in the episode
+% 	index = index(states,:); %delete the un-existing states in the eposide
+
+       
 	%use temp as a policy upgrader -- it contains the state that needs to be upgraded and actions that obtain best rewards
 	%temp is matrix -- [Prob.action1, Prob.action2]
-	temp = zeros(size(index)); 
-	for j = 1:size(index,1)
-		temp(j,index(j,2)) = 1;
-	end
-	Policy(states,:) = temp;
+% 	temp = zeros(size(index)); 
+% 	for j = 1:size(index,1)
+% 		temp(j,index(j,2)) = 1;
+% 	end
+% 	Policy(states,:) = temp;
 	
 end
 end
