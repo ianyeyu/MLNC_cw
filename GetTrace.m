@@ -3,7 +3,7 @@
 %T is transition matrix
 %R is reward matrix
 %Initial is initial state probability distribution
-%trace is [reward,postState,postAction]
+%trace is [reward,currentSate,currentAction]
 function [trace] = GetTrace(T,R,Initial,Absorbing,Policy) 
 
 priorState = DrawFromDist(Initial); %find the most possible state

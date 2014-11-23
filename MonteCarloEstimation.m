@@ -21,8 +21,8 @@ for m = 1:n
 		tmp = 0;
 			
 		%calculate the Returns for each (state, action) pair
-		for j = i:TraceSize
-			tmp = tmp + Trace(j,1).*(gamma^(j-1));
+		for j = i:TraceSize-1
+			tmp = tmp + Trace(j+1,1).*(gamma^(j-i));
 		end
 		
 		%upgrade the Return matrix for each state in episode
@@ -32,21 +32,6 @@ for m = 1:n
 	
 	Q = cellfun(@mean,Return); %Q is 7*2 numeric matrix
     Q(isnan(Q)) = 0;
-    
-    
-% 	[~,index] = max(Q,[],2); %find the max rewards action for each state -> 7*1 matrix
-% 	index = [[1:numOfStates]', index];  %concatenate maximum values with states indices -> 7*2 matrix
-% 	states = unique(states); %find the states in the episode
-% 	index = index(states,:); %delete the un-existing states in the eposide
-
-       
-	%use temp as a policy upgrader -- it contains the state that needs to be upgraded and actions that obtain best rewards
-	%temp is matrix -- [Prob.action1, Prob.action2]
-% 	temp = zeros(size(index)); 
-% 	for j = 1:size(index,1)
-% 		temp(j,index(j,2)) = 1;
-% 	end
-% 	Policy(states,:) = temp;
 	
 end
 end
