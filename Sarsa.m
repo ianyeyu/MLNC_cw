@@ -15,7 +15,7 @@ function [OptimalPolicy] = Sarsa(T, R, Initial, Absorbing, gamma, epsilon, alpha
 %
 S = length(T(:,1,1)); % number of states - introspecting transition matrix
 A = length(T(1,1,:)); % number of actions - introspecting transition matrix
-Q = zeros(S, A); % i.e. state-action value function estimate
+Q = -ones(S, A); % i.e. state-action value function estimate
 Policy = eGreedyPolicyFromQ(Q, Absorbing, epsilon);
 
 for i=1:episodes %sampling steps
